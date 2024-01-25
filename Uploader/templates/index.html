@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Upload</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            margin: 50px;
+        }
+
+        h2 {
+            color: #333;
+        }
+
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+
+        input[type="file"] {
+            margin-bottom: 10px;
+        }
+
+        input[type="submit"] {
+            background-color: #4caf50;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        #progress-bar {
+            display: none;
+            margin-top: 10px;
+            height: 20px;
+            background-color: #e0e0e0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        #upload-progress {
+            height: 100%;
+            background-color: #4caf50;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <h2>File Upload</h2>
+    <form action="/upload" method="post" enctype="multipart/form-data" id="upload-form">
+        <input type="file" name="files[]" multiple required>
+        <br>
+        <input type="submit" value="Upload">
+    </form>
+
+    <div id="progress-bar">
+        <div id="upload-progress"></div>
+    </div>
+
+    <h3>Uploaded Files:</h3>
+    <ul>
+        {% for file in files %}
+            <li><a href="{{ url_for('download_file', filename=file) }}" download>{{ file }}</a></li>
+        {% endfor %}
+    </ul>
+
+    <script>
+        document.getElementById('upload-form').addEventListener('submit', function (event) {
+            event.preventDefault();
+            var formData = new FormData(this);
+
+            var xhr = new XMLHttpRequest();
+
+            xhr.upload.onprogress = function (event) {
+                var progressBar = document.getElementById('progress-bar');
+                var uploadProgress = document.getElementById('upload-progress');
+
+                progressBar.style.display = 'block';
+                uploadProgress.style.width = (event.loaded / event.total) * 100 + '%';
+            };
+
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    alert('Files uploaded successfully');
+                    document.getElementById('progress-bar').style.display = 'none';
+                } else {
+                    alert('Error uploading files');
+                }
+            };
+
+            xhr.open('post', '/upload', true);
+            xhr.send(formData);
+        });
+    </script>
+</body>
+</html>

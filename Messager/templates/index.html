@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Application</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        #container {
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        #messages {
+            list-style-type: none;
+            padding: 10px;
+            margin: 0;
+            overflow-y: auto;
+            max-height: 400px;
+            background-color: #f9f9f9;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        form {
+            padding: 10px;
+            background-color: #eee;
+        }
+
+        input {
+            padding: 8px;
+            width: 70%;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-right: 5px;
+        }
+
+        button {
+            padding: 8px;
+            background-color: #4caf50;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+</head>
+<body>
+    <div id="container">
+        <ul id="messages"></ul>
+        <form id="message-form">
+            <input id="message-input" autocomplete="off" />
+            <button>Send</button>
+        </form>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.4/socket.io.js"></script>
+    <script>
+        var socket = io.connect('http://' + document.domain + ':' + location.port);
+
+        socket.on('message', function(data) {
+            var messages = document.getElementById('messages');
+            var li = document.createElement('li');
+            li.innerHTML = data.message;
+            messages.appendChild(li);
+            // Scroll to the bottom of the messages container
+            messages.scrollTop = messages.scrollHeight;
+        });
+
+        document.getElementById('message-form').onsubmit = function(e) {
+            e.preventDefault();
+            var messageInput = document.getElementById('message-input');
+            var message = messageInput.value;
+            socket.emit('message', { message: message });
+            messageInput.value = '';
+        };
+    </script>
+</body>
+</html>
