@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Increment Counter</title>
+</head>
+<body>
+    <h1>Current Counter: {{ counter }}</h1>
+    <form id="increment-form">
+        <button type="button" onclick="incrementCounter()">Increment</button>
+    </form>
+
+    <script>
+        function incrementCounter() {
+            fetch('http://192.168.0.175:5000/increment', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.querySelector('h1').textContent = 'Current Counter: ' + data.counter;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    </script>    
+</body>
+</html>
