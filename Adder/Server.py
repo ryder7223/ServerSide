@@ -16,8 +16,22 @@ werkzeug_logger.addFilter(Exclude200Filter())
 # Initial counter value
 counter = 0
 
-# Set of banned IP addresses
-banned_ips = {'0.0.0.0', '0.0.0.0'}
+# File path for banned IPs
+banned_ips_file = 'banned_ips.txt'
+
+def load_banned_ips():
+    try:
+        with open(banned_ips_file, 'r') as file:
+            return set(file.read().splitlines())
+    except FileNotFoundError:
+        return set()
+
+def save_banned_ips(banned_ips):
+    with open(banned_ips_file, 'w') as file:
+        file.write('\n'.join(banned_ips))
+
+# Load banned IPs on startup
+banned_ips = load_banned_ips()
 
 @app.route('/')
 def index():
@@ -29,6 +43,9 @@ def increment():
 
     # Get the user's IP address
     ip_address = request.remote_addr
+
+    # Load banned IPs on every request to ensure the latest list is considered
+    banned_ips = load_banned_ips()
 
     # Check if the user is banned
     if ip_address in banned_ips:
@@ -46,8 +63,9 @@ def increment():
 def ban_ip(ip):
     # Add the specified IP address to the banned list
     banned_ips.add(ip)
+    save_banned_ips(banned_ips)
     app.logger.info(f'User with IP {ip} has been banned.')
     return jsonify({'message': f'User with IP {ip} has been banned.'})
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='192.168.0.175', port=5000, debug=True)
