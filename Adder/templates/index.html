@@ -4,6 +4,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Increment Counter</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            margin: 50px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        button {
+            background-color: #4caf50;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
 </head>
 <body>
     <h1>Current Counter: {{ counter }}</h1>
@@ -13,7 +38,7 @@
 
     <script>
         function incrementCounter() {
-            fetch('http://192.168.0.175:5000/increment', {
+            fetch('/increment', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -27,6 +52,6 @@
                 console.error('Error:', error);
             });
         }
-    </script>    
+    </script>
 </body>
 </html>
