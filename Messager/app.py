@@ -20,7 +20,7 @@ new_connection_handler.setFormatter(logging.Formatter('%(asctime)s - %(message)s
 new_connection_logger.addHandler(new_connection_handler)
 
 # List of banned IPs
-banned_ips = {'0.0.0.0', '192.168.0.175'}  # Add the IP addresses you want to ban to this set
+banned_ips = {'0.0.0.0', '0.0.0.0'}  # Add the IP addresses you want to ban to this set
 
 messages = {}
 user_data = {}
@@ -112,7 +112,7 @@ if __name__ == '__main__':
     startup_logger.addHandler(startup_handler_terminal)
 
     # Get the host and port from the Flask app
-    host = app.config.get('HOST', '192.168.0.175')
+    host = app.config.get('HOST', '0.0.0.0')
     port = app.config.get('PORT', 5000)
 
     # Log the startup message
