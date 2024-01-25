@@ -12,6 +12,12 @@
             margin: 50px;
         }
 
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
         h2 {
             color: #333;
         }
@@ -93,7 +99,7 @@
 
             xhr.onload = function () {
                 if (xhr.status === 200) {
-                    alert('Files uploaded successfully');
+                    alert('Files uploaded successfully, reload the page to see it');
                     document.getElementById('progress-bar').style.display = 'none';
                 } else {
                     alert('Error uploading files');
@@ -102,6 +108,7 @@
 
             xhr.open('post', '/upload', true);
             xhr.send(formData);
+	    
         });
     </script>
 </body>
