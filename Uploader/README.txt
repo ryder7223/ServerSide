@@ -1,1 +1,1 @@
-In the last line, chance '0.0.0.0' to your v4 IP address, you can find this by running ipconfig in the terminal or ifconfig for linux, on mac you can find it in the details of the wifi you're connected to in settings.
+In the last line, change '0.0.0.0' to your v4 IP address, you can find this by running ipconfig in the terminal or ifconfig for linux, on mac you can find it in the details of the wifi you're connected to in settings.
